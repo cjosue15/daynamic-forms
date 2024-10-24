@@ -1,0 +1,57 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <div>
+      <p>Carrito de compras para</p>
+      <mat-form-field appearance="outline">
+        <mat-label>Cliente</mat-label>
+        <input matInput placeholder="Cliente" formControlName="client" />
+      </mat-form-field>
+    </div>
+    <div class="product-add">
+      <button mat-flat-button type="button" (click)="add()">Agregar</button>
+    </div>
+
+    <div class="product-container" formArrayName="products">
+      @for (
+        control of productArray.controls;
+        track control;
+        let index = $index
+      ) {
+        <div class="product-row" [formGroupName]="index">
+          <mat-form-field appearance="outline">
+            <mat-label>Producto</mat-label>
+            <mat-select (selectionChange)="change($event, index)">
+              @for (product of products; track product.id) {
+                <mat-option [value]="product">
+                  {{ product.name }}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Precio</mat-label>
+            <input matInput placeholder="Precio" formControlName="price" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Cantidad</mat-label>
+            <input matInput placeholder="Cantidad" formControlName="quantity" />
+          </mat-form-field>
+          <div>
+            <button
+              mat-button
+              color="secondary"
+              type="button"
+              (click)="delete(index)"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="product-save">
+      <button mat-flat-button>Save</button>
+    </div>
+  </form>
+</div>
